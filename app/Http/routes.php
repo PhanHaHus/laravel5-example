@@ -24,6 +24,14 @@ Route::group(['middleware' => ['web']], function () {
     ]);
 
 
+    // Product cate
+    Route::get('productcate/order', ['uses' => 'ProductCateController@indexOrder', 'as' => 'productcate.order']);
+    Route::get('productcate/tag', 'ProductCateController@tag');
+    Route::get('productcate/search', 'ProductCateController@search');
+    Route::put('productcateseen/{id}', 'ProductCateController@updateSeen');
+    Route::put('productcateactive/{id}', 'ProductCateController@updateActive');
+
+    Route::resource('productcate', 'ProductCateController');
     // Blog
     Route::get('blog/order', ['uses' => 'BlogController@indexOrder', 'as' => 'blog.order']);
     Route::get('articles', 'BlogController@indexFront');

@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use App\Http\Requests\PostRequest;
 use App\Http\Requests\SearchRequest;
-use App\Repositories\BlogRepository;
+use App\Repositories\ProductCateRepository;
 use App\Repositories\UserRepository;
 
-class BlogController extends Controller {
+class ProductCateController extends Controller {
 
     /**
      * The BlogRepository instance.
@@ -39,7 +38,7 @@ class BlogController extends Controller {
      * @param  App\Repositories\UserRepository $user_gestion
      * @return void
      */
-    public function __construct(BlogRepository $blog_gestion, UserRepository $user_gestion) {
+    public function __construct(ProductCateRepository $blog_gestion, UserRepository $user_gestion) {
         $this->user_gestion = $user_gestion;
         $this->blog_gestion = $blog_gestion;
         $this->nbrPages = 2;
@@ -55,8 +54,8 @@ class BlogController extends Controller {
      * @return Response
      */
     public function indexFront() {
-        $posts = $this->blog_gestion->indexFront($this->nbrPages);
-        $links = $posts->render();
+        $productcate = $this->blog_gestion->indexFront($this->nbrPages);
+        $links = $productcate->render();
 
         return view('front.blog.index', compact('posts', 'links'));
     }
@@ -67,8 +66,8 @@ class BlogController extends Controller {
      * @return Redirection
      */
     public function index() {
-        return redirect(route('blog.order', [
-            'name' => 'posts.created_at',
+        return redirect(route('productcate.order', [
+            'name' => 'product_cate.created_at',
             'sens' => 'asc'
         ]));
     }
@@ -81,11 +80,11 @@ class BlogController extends Controller {
      */
     public function indexOrder(Request $request) {
         $statut = $this->user_gestion->getStatut();
-        $posts = $this->blog_gestion->index(
+        $productcate = $this->blog_gestion->index(
                 10, $statut == 'admin' ? null : $request->user()->id, $request->name, $request->sens
         );
 
-        $links = $posts->appends([
+        $links = $productcate->appends([
             'name' => $request->name,
             'sens' => $request->sens
         ]);
@@ -104,7 +103,7 @@ class BlogController extends Controller {
                     'sens' => 'sort-' . $request->sens
         ];
 
-        return view('back.blog.index', compact('posts', 'links', 'order'));
+        return view('back.productcate.index', compact('productcate', 'links', 'order'));
     }
 
     /**
@@ -153,13 +152,13 @@ class BlogController extends Controller {
      */
     public function edit(
     UserRepository $user_gestion, $id) {
-        $post = $this->blog_gestion->getByIdWithTags($id);
+        $productcate = $this->blog_gestion->getByIdWithTags($id);
 
-        $this->authorize('change', $post);
+        $this->authorize('change', $productcate);
 
         $url = config('medias.url');
 
-        return view('back.blog.edit', array_merge($this->blog_gestion->edit($post), compact('url')));
+        return view('back.blog.edit', array_merge($this->blog_gestion->edit($productcate), compact('url')));
     }
 
     /**
@@ -171,11 +170,11 @@ class BlogController extends Controller {
      */
     public function update(
     PostRequest $request, $id) {
-        $post = $this->blog_gestion->getById($id);
+        $productcate = $this->blog_gestion->getById($id);
 
-        $this->authorize('change', $post);
+        $this->authorize('change', $productcate);
 
-        $this->blog_gestion->update($request->all(), $post);
+        $this->blog_gestion->update($request->all(), $productcate);
 
         return redirect('blog')->with('ok', trans('back/blog.updated'));
     }
@@ -203,9 +202,9 @@ class BlogController extends Controller {
      */
     public function updateActive(
     Request $request, $id) {
-        $post = $this->blog_gestion->getById($id);
+        $productcate = $this->blog_gestion->getById($id);
 
-        $this->authorize('change', $post);
+        $this->authorize('change', $productcate);
 
         $this->blog_gestion->updateActive($request->all(), $id);
 
@@ -219,11 +218,11 @@ class BlogController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        $post = $this->blog_gestion->getById($id);
+        $productcate = $this->blog_gestion->getById($id);
 
-        $this->authorize('change', $post);
+        $this->authorize('change', $productcate);
 
-        $this->blog_gestion->destroy($post);
+        $this->blog_gestion->destroy($productcate);
 
         return redirect('blog')->with('ok', trans('back/blog.destroyed'));
     }
@@ -236,8 +235,8 @@ class BlogController extends Controller {
      */
     public function tag(Request $request) {
         $tag = $request->input('tag');
-        $posts = $this->blog_gestion->indexTag($this->nbrPages, $tag);
-        $links = $posts->appends(compact('tag'))->render();
+        $productcate = $this->blog_gestion->indexTag($this->nbrPages, $tag);
+        $links = $productcate->appends(compact('tag'))->render();
         $info = trans('front/blog.info-tag') . '<strong>' . $this->blog_gestion->getTagById($tag) . '</strong>';
 
         return view('front.blog.index', compact('posts', 'links', 'info'));
@@ -251,8 +250,8 @@ class BlogController extends Controller {
      */
     public function search(SearchRequest $request) {
         $search = $request->input('search');
-        $posts = $this->blog_gestion->search($this->nbrPages, $search);
-        $links = $posts->appends(compact('search'))->render();
+        $productcate = $this->blog_gestion->search($this->nbrPages, $search);
+        $links = $productcate->appends(compact('search'))->render();
         $info = trans('front/blog.info-search') . '<strong>' . $search . '</strong>';
 
         return view('front.blog.index', compact('posts', 'links', 'info'));

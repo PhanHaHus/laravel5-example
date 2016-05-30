@@ -35,7 +35,7 @@ class AdminController extends Controller {
      * @return Response
      */
     public function admin(
-    ContactRepository $contact_gestion, BlogRepository $blog_gestion, CommentRepository $comment_gestion) {
+        ContactRepository $contact_gestion, BlogRepository $blog_gestion, CommentRepository $comment_gestion) {
         $nbrMessages = $contact_gestion->getNumber();
         $nbrUsers = $this->user_gestion->getNumber();
         $nbrPosts = $blog_gestion->getNumber();

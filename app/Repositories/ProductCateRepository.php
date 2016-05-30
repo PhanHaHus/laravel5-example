@@ -2,11 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Models\Post,
+use App\Models\ProductCateRepository,
     App\Models\Tag,
+    App\Models\ProductCategory,
     App\Models\Comment;
 
-class BlogRepository extends BaseRepository {
+class ProductCateRepository extends BaseRepository {
 
     /**
      * The Tag instance.
@@ -30,9 +31,8 @@ class BlogRepository extends BaseRepository {
      * @param  App\Models\Comment $comment
      * @return void
      */
-    public function __construct(
-    Post $post, Tag $tag, Comment $comment) {
-        $this->model = $post;
+    public function __construct(ProductCategory $productcate, Tag $tag, Comment $comment) {
+        $this->model = $productcate;
         $this->tag = $tag;
         $this->comment = $comment;
     }
@@ -45,18 +45,18 @@ class BlogRepository extends BaseRepository {
      * @param  bool   $user_id
      * @return App\Models\Post
      */
-    private function savePost($post, $inputs, $user_id = null) {
-        $post->title = $inputs['title'];
-        $post->summary = $inputs['summary'];
-        $post->content = $inputs['content'];
-        $post->slug = $inputs['slug'];
-        $post->active = isset($inputs['active']);
+    private function saveProductCate($productcate, $inputs, $user_id = null) {
+        $productcate->title = $inputs['title'];
+        $productcate->summary = $inputs['summary'];
+        $productcate->content = $inputs['content'];
+        $productcate->slug = $inputs['slug'];
+        $productcate->active = isset($inputs['active']);
         if ($user_id) {
-            $post->user_id = $user_id;
+            $productcate->user_id = $user_id;
         }
-        $post->save();
+        $productcate->save();
 
-        return $post;
+        return $productcate;
     }
 
     /**
@@ -128,8 +128,8 @@ class BlogRepository extends BaseRepository {
      */
     public function index($n, $user_id = null, $orderby = 'created_at', $direction = 'desc') {
         $query = $this->model
-                ->select('posts.id', 'posts.created_at', 'title', 'posts.seen', 'active', 'user_id', 'slug', 'username')
-                ->join('users', 'users.id', '=', 'posts.user_id')
+                ->select('product_category.id', 'product_category.created_at', 'title', 'product_category.seen', 'active', 'user_id', 'slug', 'username')
+                ->join('users', 'users.id', '=', 'product_category.user_id')
                 ->orderBy($orderby, $direction);
 
         if ($user_id) {
@@ -165,14 +165,14 @@ class BlogRepository extends BaseRepository {
      * @param  App\Models\Post $post
      * @return array
      */
-    public function edit($post) {
+    public function edit($productcate) {
         $tags = [];
 
-        foreach ($post->tags as $tag) {
+        foreach ($productcate->tags as $tag) {
             array_push($tags, $tag->tag);
         }
 
-        return compact('post', 'tags');
+        return compact('productcate', 'tags');
     }
 
     /**
@@ -192,8 +192,8 @@ class BlogRepository extends BaseRepository {
      * @param  App\Models\Post $post
      * @return void
      */
-    public function update($inputs, $post) {
-        $post = $this->savePost($post, $inputs);
+    public function update($inputs, $productcate) {
+        $productcate = $this->saveProductCate($productcate, $inputs);
 
         // Tag gestion
         $tags_id = [];
@@ -212,7 +212,7 @@ class BlogRepository extends BaseRepository {
             }
         }
 
-        $post->tags()->sync($tags_id);
+        $productcate->tags()->sync($tags_id);
     }
 
     /**
@@ -253,7 +253,7 @@ class BlogRepository extends BaseRepository {
      * @return void
      */
     public function store($inputs, $user_id) {
-        $post = $this->savePost(new $this->model, $inputs, $user_id);
+        $productcate = $this->saveProductCate(new $this->model, $inputs, $user_id);
 
         // Tags gestion
         if (array_key_exists('tags', $inputs) && $inputs['tags'] != '') {
@@ -265,9 +265,9 @@ class BlogRepository extends BaseRepository {
                 if (is_null($tag_ref)) {
                     $tag_ref = new $this->tag();
                     $tag_ref->tag = $tag;
-                    $post->tags()->save($tag_ref);
+                    $productcate->tags()->save($tag_ref);
                 } else {
-                    $post->tags()->attach($tag_ref->id);
+                    $productcate->tags()->attach($tag_ref->id);
                 }
             }
         }
@@ -281,10 +281,10 @@ class BlogRepository extends BaseRepository {
      * @param  App\Models\Post $post
      * @return void
      */
-    public function destroy($post) {
-        $post->tags()->detach();
+    public function destroy($productcate) {
+        $productcate->tags()->detach();
 
-        $post->delete();
+        $productcate->delete();
     }
 
     /**

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Presenters\DatePresenter;
 
-class Comment extends Model {
+class ProductCategory extends Model {
 
     use DatePresenter;
 
@@ -14,7 +14,7 @@ class Comment extends Model {
      *
      * @var string
      */
-    protected $table = 'comments';
+    protected $table = 'product_category';
 
     /**
      * One to Many relation
@@ -26,12 +26,21 @@ class Comment extends Model {
     }
 
     /**
+     * Many to Many relation
+     *
+     * @return Illuminate\Database\Eloquent\Relations\belongToMany
+     */
+    public function tags() {
+        return $this->belongsToMany('App\Models\Tag');
+    }
+
+    /**
      * One to Many relation
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return Illuminate\Database\Eloquent\Relations\hasMany
      */
-    public function post() {
-        return $this->belongsTo('App\Models\Post');
+    public function comments() {
+        return $this->hasMany('App\Models\Comment');
     }
 
 }
