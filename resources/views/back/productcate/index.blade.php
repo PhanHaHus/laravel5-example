@@ -1,8 +1,6 @@
 @extends('back.template')
-
 @section('main')
-
-@include('back.partials.entete', ['title' => trans('back/product.dashboard') . link_to_route('product.create', trans('back/product.add'), [], ['class' => 'btn btn-info pull-right']), 'icone' => 'pencil', 'fil' => trans('back/blog.posts')])
+@include('back.partials.entete', ['title' => 'Product Category' . link_to_route('productcate.create', 'New Category', [], ['class' => 'btn btn-info pull-right']), 'icone' => 'pencil', 'fil' => 'Productcate'])
 
 @if(session()->has('ok'))
 @include('partials/error', ['type' => 'success', 'message' => session('ok')])
@@ -17,41 +15,35 @@
             <thead>
                 <tr>
                     <th>
-                        {{ trans('back/blog.title') }} 
-                        <a href="#" name="posts.title" class="order">
+                        Product Category Name
+                        <a href="#" name="name" class="order">
                             <span class="fa fa-fw fa-{{ $order->name == 'posts.title' ? $order->sens : 'unsorted'}}"></span>
                         </a>
                     </th>
                     <th>
-                        {{ trans('back/blog.date') }}
-                        <a href="#" name="posts.created_at" class="order">
+                        Created At
+                        <a href="#" name="created_at" class="order">
                             <span class="fa fa-fw fa-{{ $order->name == 'posts.created_at' ? $order->sens : 'unsorted'}}"></span>
                         </a>
                     </th>
                     <th>
                         {{ trans('back/blog.published') }}
-                        <a href="#" name="posts.active" class="order">
+                        <a href="#" name="productcate.active" class="">
                             <span class="fa fa-fw fa-{{ $order->name == 'posts.active' ? $order->sens : 'unsorted'}}"></span>
                         </a>
                     </th> 
                     @if(session('statut') == 'admin')
                     <th>
                         {{ trans('back/blog.author') }}
-                        <a href="#" name="username" class="order">
+                        <a href="#" name="username" class="">
                             <span class="fa fa-fw fa-{{ $order->name == 'username' ? $order->sens : 'unsorted'}}"></span>
                         </a>
                     </th>            
-                    <th>
-                        {{ trans('back/blog.seen') }}
-                        <a href="#" name="posts.seen" class="order">
-                            <span class="fa fa-fw fa-{{ $order->name == 'posts.seen' ? $order->sens : 'unsorted'}}"></span>
-                        </a>
-                    </th>
                     @endif
                 </tr>
             </thead>
             <tbody>
-                @include('back.blog.table')
+                @include('back.productcate.table')
             </tbody>
         </table>
     </div>
@@ -60,58 +52,12 @@
 <div class="row col-lg-12">
     <div class="pull-right link">{!! $links !!}</div>
 </div>
-
 @stop
-
 @section('scripts')
-
 <script>
-
     $(function() {
-
-    // Seen gestion
-    $(document).on('change', ':checkbox[name="seen"]', function() {
-    $(this).parents('tr').toggleClass('warning');
-            $(this).hide().parent().append('<i class="fa fa-refresh fa-spin"></i>');
-            var token = $('input[name="_token"]').val();
-            $.ajax({
-            url: '{{ url('postseen') }}' + '/' + this.value,
-                    type: 'PUT',
-                    data: "seen=" + this.checked + "&_token=" + token
-            })
-            .done(function() {
-            $('.fa-spin').remove();
-                    $('input:checkbox[name="seen"]:hidden').show();
-            })
-            .fail(function() {
-            $('.fa-spin').remove();
-                    chk = $('input:checkbox[name="seen"]:hidden');
-                    chk.show().prop('checked', chk.is(':checked') ? null:'checked').parents('tr').toggleClass('warning');
-                    alert('{{ trans('back / blog.fail') }}');
-            });
-    });
-            // Active gestion
-            $(document).on('change', ':checkbox[name="active"]', function() {
-    $(this).hide().parent().append('<i class="fa fa-refresh fa-spin"></i>');
-            var token = $('input[name="_token"]').val();
-            $.ajax({
-            url: '{{ url('postactive') }}' + '/' + this.value,
-                    type: 'PUT',
-                    data: "active=" + this.checked + "&_token=" + token
-            })
-            .done(function() {
-            $('.fa-spin').remove();
-                    $('input:checkbox[name="active"]:hidden').show();
-            })
-            .fail(function() {
-            $('.fa-spin').remove();
-                    chk = $('input:checkbox[name="active"]:hidden');
-                    chk.show().prop('checked', chk.is(':checked') ? null:'checked').parents('tr').toggleClass('warning');
-                    alert('{{ trans('back / blog.fail') }}');
-            });
-    });
-            // Sorting gestion
-            $('a.order').click(function(e) {
+    // Sorting gestion
+    $('a.order').click(function(e) {
     e.preventDefault();
             // Sorting direction
             var sens;
@@ -135,21 +81,21 @@
             $('.breadcrumb li').append('<span id="tempo" class="fa fa-refresh fa-spin"></span>');
             // Send ajax
             $.ajax({
-            url: '{{ url('blog / order') }}',
+            url: '{{ url('productcate / order') }}',
                     type: 'GET',
                     dataType: 'json',
                     data: "name=" + name + "&sens=" + tri
             })
             .done(function(data) {
             $('tbody').html(data.view);
-                    $('.link').html(data.links.replace('posts.(.+)&sens', name));
+                    $('.link').html(data.links.replace('productcate.(.+)&sens', name));
                     $('#tempo').remove();
             })
             .fail(function() {
             $('#tempo').remove();
                     alert('{{ trans('back / blog.fail') }}');
             });
-        })
+    })
 
     });
 

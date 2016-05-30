@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductCateRequest;
 use App\Http\Requests\SearchRequest;
 use App\Repositories\ProductCateRepository;
 use App\Repositories\UserRepository;
@@ -51,23 +52,11 @@ class ProductCateController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
-     */
-    public function indexFront() {
-        $productcate = $this->blog_gestion->indexFront($this->nbrPages);
-        $links = $productcate->render();
-
-        return view('front.blog.index', compact('posts', 'links'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
      * @return Redirection
      */
     public function index() {
         return redirect(route('productcate.order', [
-            'name' => 'product_cate.created_at',
+            'name' => 'created_at',
             'sens' => 'asc'
         ]));
     }
@@ -81,9 +70,8 @@ class ProductCateController extends Controller {
     public function indexOrder(Request $request) {
         $statut = $this->user_gestion->getStatut();
         $productcate = $this->blog_gestion->index(
-                10, $statut == 'admin' ? null : $request->user()->id, $request->name, $request->sens
+                10, $request->name
         );
-
         $links = $productcate->appends([
             'name' => $request->name,
             'sens' => $request->sens
@@ -91,8 +79,8 @@ class ProductCateController extends Controller {
 
         if ($request->ajax()) {
             return response()->json([
-                        'view' => view('back.blog.table', compact('statut', 'posts'))->render(),
-                        'links' => e($links->setPath('order')->render())
+                    'view' => view('back.productcate.table', compact('statut', 'productcate'))->render(),
+                    'links' => e($links->setPath('order')->render())
             ]);
         }
 
@@ -113,34 +101,19 @@ class ProductCateController extends Controller {
      */
     public function create() {
         $url = config('medias.url');
-
-        return view('back.blog.create')->with(compact('url'));
+        return view('back.productcate.create')->with(compact('url'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\PostRequest $request
+     * @param  App\Http\Requests\ProductCateRequest $request
      * @return Response
      */
-    public function store(PostRequest $request) {
+    public function store(ProductCateRequest $request) {
         $this->blog_gestion->store($request->all(), $request->user()->id);
 
-        return redirect('blog')->with('ok', trans('back/blog.stored'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  Illuminate\Contracts\Auth\Guard $auth	 
-     * @param  string $slug
-     * @return Response
-     */
-    public function show(
-    Guard $auth, $slug) {
-        $user = $auth->user();
-
-        return view('front.blog.show', array_merge($this->blog_gestion->show($slug), compact('user')));
+        return redirect('productcate')->with('ok', trans('back/blog.stored'));
     }
 
     /**
@@ -150,15 +123,13 @@ class ProductCateController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function edit(
-    UserRepository $user_gestion, $id) {
+    public function edit(UserRepository $user_gestion, $id) {
         $productcate = $this->blog_gestion->getByIdWithTags($id);
-
+        dd($productcate);
         $this->authorize('change', $productcate);
 
         $url = config('medias.url');
-
-        return view('back.blog.edit', array_merge($this->blog_gestion->edit($productcate), compact('url')));
+        return view('back.productcate.edit', array_merge($this->blog_gestion->edit($productcate), compact('url')));
     }
 
     /**
@@ -168,47 +139,14 @@ class ProductCateController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update(
-    PostRequest $request, $id) {
+    public function update(ProductCateRequest $request, $id) {
         $productcate = $this->blog_gestion->getById($id);
 
         $this->authorize('change', $productcate);
 
         $this->blog_gestion->update($request->all(), $productcate);
 
-        return redirect('blog')->with('ok', trans('back/blog.updated'));
-    }
-
-    /**
-     * Update "vu" for the specified resource in storage.
-     *
-     * @param  Illuminate\Http\Request $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function updateSeen(
-    Request $request, $id) {
-        $this->blog_gestion->updateSeen($request->all(), $id);
-
-        return response()->json();
-    }
-
-    /**
-     * Update "active" for the specified resource in storage.
-     *
-     * @param  Illuminate\Http\Request $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function updateActive(
-    Request $request, $id) {
-        $productcate = $this->blog_gestion->getById($id);
-
-        $this->authorize('change', $productcate);
-
-        $this->blog_gestion->updateActive($request->all(), $id);
-
-        return response()->json();
+        return redirect('productcate')->with('ok', trans('back/blog.updated'));
     }
 
     /**
@@ -224,37 +162,7 @@ class ProductCateController extends Controller {
 
         $this->blog_gestion->destroy($productcate);
 
-        return redirect('blog')->with('ok', trans('back/blog.destroyed'));
-    }
-
-    /**
-     * Get tagged posts
-     * 
-     * @param  Illuminate\Http\Request $request
-     * @return Response
-     */
-    public function tag(Request $request) {
-        $tag = $request->input('tag');
-        $productcate = $this->blog_gestion->indexTag($this->nbrPages, $tag);
-        $links = $productcate->appends(compact('tag'))->render();
-        $info = trans('front/blog.info-tag') . '<strong>' . $this->blog_gestion->getTagById($tag) . '</strong>';
-
-        return view('front.blog.index', compact('posts', 'links', 'info'));
-    }
-
-    /**
-     * Find search in blog
-     *
-     * @param  App\Http\Requests\SearchRequest $request
-     * @return Response
-     */
-    public function search(SearchRequest $request) {
-        $search = $request->input('search');
-        $productcate = $this->blog_gestion->search($this->nbrPages, $search);
-        $links = $productcate->appends(compact('search'))->render();
-        $info = trans('front/blog.info-search') . '<strong>' . $search . '</strong>';
-
-        return view('front.blog.index', compact('posts', 'links', 'info'));
+        return redirect('productcate')->with('ok', trans('back/blog.destroyed'));
     }
 
 }

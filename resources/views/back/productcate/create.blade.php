@@ -1,5 +1,5 @@
-@extends('back.product.template')
+@extends('back.productcate.template')
 
 @section('form')
-{!! Form::open(['url' => 'product', 'method' => 'post', 'class' => 'form-horizontal panel']) !!}	
+{!! Form::open(['url' => 'productcate', 'method' => 'post', 'class' => 'form-horizontal panel']) !!}	
 @stop

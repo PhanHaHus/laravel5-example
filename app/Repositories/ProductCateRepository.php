@@ -2,9 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\ProductCateRepository,
+use App\Models\ProductCategory,
     App\Models\Tag,
-    App\Models\ProductCategory,
     App\Models\Comment;
 
 class ProductCateRepository extends BaseRepository {
@@ -46,16 +45,8 @@ class ProductCateRepository extends BaseRepository {
      * @return App\Models\Post
      */
     private function saveProductCate($productcate, $inputs, $user_id = null) {
-        $productcate->title = $inputs['title'];
-        $productcate->summary = $inputs['summary'];
-        $productcate->content = $inputs['content'];
-        $productcate->slug = $inputs['slug'];
-        $productcate->active = isset($inputs['active']);
-        if ($user_id) {
-            $productcate->user_id = $user_id;
-        }
+        $productcate->name = $inputs['name'];
         $productcate->save();
-
         return $productcate;
     }
 
@@ -66,7 +57,7 @@ class ProductCateRepository extends BaseRepository {
      */
     private function queryActiveWithUserOrderByDate() {
         return $this->model
-                        ->select('id', 'created_at', 'updated_at', 'title', 'slug', 'user_id', 'summary')
+                        ->select('id', 'created_at', 'updated_at', 'name', 'slug')
                         ->whereActive(true)
                         ->with('user')
                         ->latest();
@@ -113,7 +104,7 @@ class ProductCateRepository extends BaseRepository {
         return $query->where(function($q) use ($search) {
                     $q->where('summary', 'like', "%$search%")
                             ->orWhere('content', 'like', "%$search%")
-                            ->orWhere('title', 'like', "%$search%");
+                            ->orWhere('name', 'like', "%$search%");
                 })->paginate($n);
     }
 
@@ -128,14 +119,8 @@ class ProductCateRepository extends BaseRepository {
      */
     public function index($n, $user_id = null, $orderby = 'created_at', $direction = 'desc') {
         $query = $this->model
-                ->select('product_category.id', 'product_category.created_at', 'title', 'product_category.seen', 'active', 'user_id', 'slug', 'username')
-                ->join('users', 'users.id', '=', 'product_category.user_id')
+                ->select('product_category.id', 'product_category.created_at', 'name')
                 ->orderBy($orderby, $direction);
-
-        if ($user_id) {
-            $query->where('user_id', $user_id);
-        }
-
         return $query->paginate($n);
     }
 
@@ -167,11 +152,9 @@ class ProductCateRepository extends BaseRepository {
      */
     public function edit($productcate) {
         $tags = [];
-
         foreach ($productcate->tags as $tag) {
             array_push($tags, $tag->tag);
         }
-
         return compact('productcate', 'tags');
     }
 
@@ -216,21 +199,6 @@ class ProductCateRepository extends BaseRepository {
     }
 
     /**
-     * Update "seen" in post.
-     *
-     * @param  array  $inputs
-     * @param  int    $id
-     * @return void
-     */
-    public function updateSeen($inputs, $id) {
-        $post = $this->getById($id);
-
-        $post->seen = $inputs['seen'] == 'true';
-
-        $post->save();
-    }
-
-    /**
      * Update "active" in post.
      *
      * @param  array  $inputs
@@ -254,24 +222,6 @@ class ProductCateRepository extends BaseRepository {
      */
     public function store($inputs, $user_id) {
         $productcate = $this->saveProductCate(new $this->model, $inputs, $user_id);
-
-        // Tags gestion
-        if (array_key_exists('tags', $inputs) && $inputs['tags'] != '') {
-
-            $tags = explode(',', $inputs['tags']);
-
-            foreach ($tags as $tag) {
-                $tag_ref = $this->tag->whereTag($tag)->first();
-                if (is_null($tag_ref)) {
-                    $tag_ref = new $this->tag();
-                    $tag_ref->tag = $tag;
-                    $productcate->tags()->save($tag_ref);
-                } else {
-                    $productcate->tags()->attach($tag_ref->id);
-                }
-            }
-        }
-
         // Maybe purge orphan tags...
     }
 

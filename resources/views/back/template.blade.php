@@ -82,7 +82,7 @@
                         <li {!! classActiveSegment(1, 'product') !!}>
                             <a href="#" data-toggle="collapse" data-target="#productmenu"><span class="fa fa-fw fa-pencil"></span>Product<span class="fa fa-fw fa-caret-down"></a>
                             <ul id="productmenu" class="collapse">
-                                <li><a href="{!! url('productcate/order') !!}">Product Category</a></li>
+                                <li><a href="{!! url('productcate') !!}">Product Category</a></li>
                                 <li><a href="{!! url('product') !!}">Product</a></li>
                             </ul>
                         </li>
