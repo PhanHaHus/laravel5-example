@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Presenters\DatePresenter;
 
-class ProductCategory extends Model {
+class Product extends Model {
 
     use DatePresenter;
 
@@ -14,16 +14,7 @@ class ProductCategory extends Model {
      *
      * @var string
      */
-    protected $table = 'product';
-
-    /**
-     * One to Many relation
-     *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user() {
-        return $this->belongsTo('App\Models\User');
-    }
+    protected $table = 'products';
 
     /**
      * Many to Many relation
