@@ -2,9 +2,11 @@
 
 namespace Illuminate\Database\Eloquent\Relations;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as BaseCollection;
 
 class MorphTo extends BelongsTo
 {
@@ -176,9 +178,29 @@ class MorphTo extends BelongsTo
         $key = $instance->getTable().'.'.$instance->getKeyName();
 
         $query = clone $this->query;
+
+        $query->setEagerLoads($this->getEagerLoadsForInstance($instance));
+
         $query->setModel($instance);
 
         return $query->whereIn($key, $this->gatherKeysByType($type)->all())->get();
+    }
+
+    /**
+     * Get the relationships that should be eager loaded for the given model.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $instance
+     * @return array
+     */
+    protected function getEagerLoadsForInstance(Model $instance)
+    {
+        $relations = BaseCollection::make($this->query->getEagerLoads());
+
+        return $relations->filter(function ($constraint, $relation) {
+            return Str::startsWith($relation, $this->relation.'.');
+        })->keyBy(function ($constraint, $relation) {
+            return Str::replaceFirst($this->relation.'.', '', $relation);
+        })->merge($instance->getEagerLoads())->all();
     }
 
     /**
@@ -193,7 +215,6 @@ class MorphTo extends BelongsTo
 
         return collect($this->dictionary[$type])->map(function ($models) use ($foreign) {
             return head($models)->{$foreign};
-
         })->values()->unique();
     }
 

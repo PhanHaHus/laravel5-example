@@ -1,5 +1,5 @@
-@extends('back.product.template')
+@extends('back.productcate.template')
 
 @section('form')
-	{!! Form::model($post, ['route' => ['product.update', $post->id], 'method' => 'put', 'class' => 'form-horizontal panel']) !!}
+{!! Form::model($productcate, ['route' => ['productcate.update', $productcate->id], 'method' => 'put', 'class' => 'form-horizontal panel']) !!}
 @stop

@@ -152,10 +152,7 @@ class ProductCateRepository extends BaseRepository {
      */
     public function edit($productcate) {
         $tags = [];
-        foreach ($productcate->tags as $tag) {
-            array_push($tags, $tag->tag);
-        }
-        return compact('productcate', 'tags');
+        return compact('productcate');
     }
 
     /**
@@ -177,25 +174,6 @@ class ProductCateRepository extends BaseRepository {
      */
     public function update($inputs, $productcate) {
         $productcate = $this->saveProductCate($productcate, $inputs);
-
-        // Tag gestion
-        $tags_id = [];
-        if (array_key_exists('tags', $inputs) && $inputs['tags'] != '') {
-
-            $tags = explode(',', $inputs['tags']);
-
-            foreach ($tags as $tag) {
-                $tag_ref = $this->tag->whereTag($tag)->first();
-                if (is_null($tag_ref)) {
-                    $tag_ref = new $this->tag();
-                    $tag_ref->tag = $tag;
-                    $tag_ref->save();
-                }
-                array_push($tags_id, $tag_ref->id);
-            }
-        }
-
-        $productcate->tags()->sync($tags_id);
     }
 
     /**
@@ -232,8 +210,6 @@ class ProductCateRepository extends BaseRepository {
      * @return void
      */
     public function destroy($productcate) {
-        $productcate->tags()->detach();
-
         $productcate->delete();
     }
 

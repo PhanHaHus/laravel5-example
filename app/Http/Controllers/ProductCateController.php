@@ -124,10 +124,7 @@ class ProductCateController extends Controller {
      * @return Response
      */
     public function edit(UserRepository $user_gestion, $id) {
-        $productcate = $this->blog_gestion->getByIdWithTags($id);
-        dd($productcate);
-        $this->authorize('change', $productcate);
-
+        $productcate = $this->blog_gestion->getById($id);
         $url = config('medias.url');
         return view('back.productcate.edit', array_merge($this->blog_gestion->edit($productcate), compact('url')));
     }
@@ -142,8 +139,6 @@ class ProductCateController extends Controller {
     public function update(ProductCateRequest $request, $id) {
         $productcate = $this->blog_gestion->getById($id);
 
-        $this->authorize('change', $productcate);
-
         $this->blog_gestion->update($request->all(), $productcate);
 
         return redirect('productcate')->with('ok', trans('back/blog.updated'));
@@ -157,11 +152,7 @@ class ProductCateController extends Controller {
      */
     public function destroy($id) {
         $productcate = $this->blog_gestion->getById($id);
-
-        $this->authorize('change', $productcate);
-
         $this->blog_gestion->destroy($productcate);
-
         return redirect('productcate')->with('ok', trans('back/blog.destroyed'));
     }
 

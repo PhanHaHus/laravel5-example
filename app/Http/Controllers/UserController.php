@@ -33,8 +33,7 @@ class UserController extends Controller {
      * @param  App\Repositories\RoleRepository $role_gestion
      * @return void
      */
-    public function __construct(
-    UserRepository $user_gestion, RoleRepository $role_gestion) {
+    public function __construct(UserRepository $user_gestion, RoleRepository $role_gestion) {
         $this->user_gestion = $user_gestion;
         $this->role_gestion = $role_gestion;
 

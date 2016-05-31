@@ -26,20 +26,9 @@
                             <span class="fa fa-fw fa-{{ $order->name == 'posts.created_at' ? $order->sens : 'unsorted'}}"></span>
                         </a>
                     </th>
-                    <th>
-                        {{ trans('back/blog.published') }}
-                        <a href="#" name="productcate.active" class="">
-                            <span class="fa fa-fw fa-{{ $order->name == 'posts.active' ? $order->sens : 'unsorted'}}"></span>
-                        </a>
+                    <th colspan="2">
+                        Action
                     </th> 
-                    @if(session('statut') == 'admin')
-                    <th>
-                        {{ trans('back/blog.author') }}
-                        <a href="#" name="username" class="">
-                            <span class="fa fa-fw fa-{{ $order->name == 'username' ? $order->sens : 'unsorted'}}"></span>
-                        </a>
-                    </th>            
-                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -58,7 +47,7 @@
     $(function() {
     // Sorting gestion
     $('a.order').click(function(e) {
-    e.preventDefault();
+            e.preventDefault();
             // Sorting direction
             var sens;
             if ($('span', this).hasClass('fa-unsorted')) sens = 'aucun';
@@ -70,33 +59,32 @@
             $('span', this).removeClass();
             var tri;
             if (sens == 'aucun' || sens == 'asc') {
-    $('span', this).addClass('fa fa-fw fa-sort-desc');
-            tri = 'desc';
-    } else if (sens == 'desc') {
-    $('span', this).addClass('fa fa-fw fa-sort-asc');
-            tri = 'asc';
-    }
-    var name = $(this).attr('name');
+                $('span', this).addClass('fa fa-fw fa-sort-desc');
+                        tri = 'desc';
+                } else if (sens == 'desc') {
+                $('span', this).addClass('fa fa-fw fa-sort-asc');
+                        tri = 'asc';
+            }
+            var name = $(this).attr('name');
             // Wait icon
             $('.breadcrumb li').append('<span id="tempo" class="fa fa-refresh fa-spin"></span>');
             // Send ajax
             $.ajax({
-            url: '{{ url('productcate / order') }}',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: "name=" + name + "&sens=" + tri
+                url: '{{ url('productcate/order') }}',
+                type: 'GET',
+                dataType: 'json',
+                data: "name=" + name + "&sens=" + tri
             })
             .done(function(data) {
-            $('tbody').html(data.view);
-                    $('.link').html(data.links.replace('productcate.(.+)&sens', name));
-                    $('#tempo').remove();
+                $('tbody').html(data.view);
+                $('.link').html(data.links.replace('productcate.(.+)&sens', name));
+                $('#tempo').remove();
             })
             .fail(function() {
-            $('#tempo').remove();
-                    alert('{{ trans('back / blog.fail') }}');
+                $('#tempo').remove();
+                alert('{{ trans('back / blog.fail') }}');
             });
-    })
-
+        })
     });
 
 </script>
