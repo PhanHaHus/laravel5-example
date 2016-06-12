@@ -44,9 +44,9 @@ class ProductController extends Controller {
         $this->product_gestion = $product_gestion;
         $this->nbrPages = 2;
 
-        $this->middleware('redac', ['except' => ['indexFront', 'show', 'tag', 'search']]);
-        $this->middleware('admin', ['only' => 'updateSeen']);
-        $this->middleware('ajax', ['only' => ['updateSeen', 'updateActive']]);
+        $this->middleware('redac', ['except' => ['indexFront', 'show', 'search']]);
+        $this->middleware('admin');
+        $this->middleware('ajax', ['only' => ['updateActive']]);
     }
 
     /**
@@ -84,7 +84,7 @@ class ProductController extends Controller {
         $products = $this->product_gestion->index(
                 10, $statut == 'admin' ? null : $request->user()->id, $request->name, $request->sens
         );
-        
+
         $links = $products->appends([
             'name' => $request->name,
             'sens' => $request->sens
@@ -186,12 +186,12 @@ class ProductController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function updateSeen(
-    Request $request, $id) {
-        $this->product_gestion->updateSeen($request->all(), $id);
-
-        return response()->json();
-    }
+//    public function updateSeen(
+//    Request $request, $id) {
+//        $this->product_gestion->updateSeen($request->all(), $id);
+//
+//        return response()->json();
+//    }
 
     /**
      * Update "active" for the specified resource in storage.
@@ -233,14 +233,14 @@ class ProductController extends Controller {
      * @param  Illuminate\Http\Request $request
      * @return Response
      */
-    public function tag(Request $request) {
-        $tag = $request->input('tag');
-        $products = $this->product_gestion->indexTag($this->nbrPages, $tag);
-        $links = $products->appends(compact('tag'))->render();
-        $info = trans('front/product.info-tag') . '<strong>' . $this->product_gestion->getTagById($tag) . '</strong>';
-
-        return view('front.product.index', compact('products', 'links', 'info'));
-    }
+//    public function tag(Request $request) {
+//        $tag = $request->input('tag');
+//        $products = $this->product_gestion->indexTag($this->nbrPages, $tag);
+//        $links = $products->appends(compact('tag'))->render();
+//        $info = trans('front/product.info-tag') . '<strong>' . $this->product_gestion->getTagById($tag) . '</strong>';
+//
+//        return view('front.product.index', compact('products', 'links', 'info'));
+//    }
 
     /**
      * Find search in blog

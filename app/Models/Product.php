@@ -21,9 +21,9 @@ class Product extends Model {
      *
      * @return Illuminate\Database\Eloquent\Relations\belongToMany
      */
-    public function tags() {
-        return $this->belongsToMany('App\Models\Tag');
-    }
+//    public function tags() {
+//        return $this->belongsToMany('App\Models\Tag');
+//    }
 
     /**
      * One to Many relation
