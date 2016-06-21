@@ -14,6 +14,7 @@ return array(
     'CreatePostTagTable' => $baseDir . '/database/migrations/2014_10_26_172904_create_post_tag_table.php',
     'CreatePostsTable' => $baseDir . '/database/migrations/2014_10_26_172107_create_posts_table.php',
     'CreateProductCategory' => $baseDir . '/database/migrations/2016_02_23_150625_create_product_category.php',
+    'CreateProductTagTable' => $baseDir . '/database/migrations/2016_06_21_082858_create_product_tag_table.php',
     'CreateProductsTable' => $baseDir . '/database/migrations/2016_03_10_145030_create_products_table.php',
     'CreateRolesTable' => $baseDir . '/database/migrations/2014_10_21_105844_create_roles_table.php',
     'CreateTagsTable' => $baseDir . '/database/migrations/2014_10_26_172631_create_tags_table.php',

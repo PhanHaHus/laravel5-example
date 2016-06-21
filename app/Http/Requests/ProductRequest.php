@@ -12,7 +12,7 @@ class ProductRequest extends Request {
      * @return array
      */
     public function rules() {
-        $id = $this->blog ? ',' . $this->blog : '';
+        $id = $this->product ? ',' . $this->product : '';
         return [
             'title' => 'required|max:255',
             'summary' => 'required|max:65000',

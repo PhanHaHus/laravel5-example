@@ -92,8 +92,8 @@ class ProductController extends Controller {
 
         if ($request->ajax()) {
             return response()->json([
-                        'view' => view('back.product.table', compact('statut', 'products'))->render(),
-                        'links' => e($links->setPath('order')->render())
+                'view' => view('back.product.table', compact('statut', 'products'))->render(),
+                'links' => e($links->setPath('order')->render())
             ]);
         }
 
@@ -152,13 +152,9 @@ class ProductController extends Controller {
      * @return Response
      */
     public function edit(UserRepository $user_gestion, $id) {
-        $post = $this->product_gestion->getByIdWithTags($id);
-
-        $this->authorize('change', $post);
-
+        $product = $this->product_gestion->getByIdWithTags($id);
         $url = config('medias.url');
-
-        return view('back.product.edit', array_merge($this->product_gestion->edit($post), compact('url')));
+        return view('back.product.edit', array_merge($this->product_gestion->edit($product), compact('url')));
     }
 
     /**
@@ -170,11 +166,9 @@ class ProductController extends Controller {
      */
     public function update(
         ProductRequest $request, $id) {
-        $post = $this->product_gestion->getById($id);
+        $product = $this->product_gestion->getById($id);
 
-        $this->authorize('change', $post);
-
-        $this->product_gestion->update($request->all(), $post);
+        $this->product_gestion->update($request->all(), $product);
 
         return redirect('product')->with('ok', trans('back/blog.updated'));
     }
@@ -186,12 +180,12 @@ class ProductController extends Controller {
      * @param  int  $id
      * @return Response
      */
-//    public function updateSeen(
-//    Request $request, $id) {
-//        $this->product_gestion->updateSeen($request->all(), $id);
-//
-//        return response()->json();
-//    }
+    public function updateSeen(
+    Request $request, $id) {
+        $this->product_gestion->updateSeen($request->all(), $id);
+
+        return response()->json();
+    }
 
     /**
      * Update "active" for the specified resource in storage.
@@ -200,11 +194,10 @@ class ProductController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function updateActive(
-    Request $request, $id) {
-        $post = $this->product_gestion->getById($id);
+    public function updateActive(Request $request, $id) {
+        $product = $this->product_gestion->getById($id);
 
-        $this->authorize('change', $post);
+        $this->authorize('change', $product);
 
         $this->product_gestion->updateActive($request->all(), $id);
 
@@ -218,11 +211,11 @@ class ProductController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        $post = $this->product_gestion->getById($id);
+        $product = $this->product_gestion->getById($id);
 
-        $this->authorize('change', $post);
+        $this->authorize('change', $product);
 
-        $this->product_gestion->destroy($post);
+        $this->product_gestion->destroy($product);
 
         return redirect('product')->with('ok', trans('back/blog.destroyed'));
     }
@@ -233,14 +226,14 @@ class ProductController extends Controller {
      * @param  Illuminate\Http\Request $request
      * @return Response
      */
-//    public function tag(Request $request) {
-//        $tag = $request->input('tag');
-//        $products = $this->product_gestion->indexTag($this->nbrPages, $tag);
-//        $links = $products->appends(compact('tag'))->render();
-//        $info = trans('front/product.info-tag') . '<strong>' . $this->product_gestion->getTagById($tag) . '</strong>';
-//
-//        return view('front.product.index', compact('products', 'links', 'info'));
-//    }
+    public function tag(Request $request) {
+        $tag = $request->input('tag');
+        $products = $this->product_gestion->indexTag($this->nbrPages, $tag);
+        $links = $products->appends(compact('tag'))->render();
+        $info = trans('front/product.info-tag') . '<strong>' . $this->product_gestion->getTagById($tag) . '</strong>';
+
+        return view('front.product.index', compact('products', 'links', 'info'));
+    }
 
     /**
      * Find search in blog

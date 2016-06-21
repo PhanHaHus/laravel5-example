@@ -16,7 +16,7 @@
 
     <div class="form-group checkbox pull-right">
         <label>
-            {!! Form::checkbox('active') !!}
+            {!! Form::checkbox('active','1',true) !!}
             {{ trans('back/blog.published') }}
         </label>
     </div>
@@ -28,7 +28,7 @@
         {!! url('/') . '/product/' . Form::text('slug', null, ['id' => 'permalien']) !!}
         <small class="text-danger">{!! $errors->first('slug') !!}</small>
     </div>
-
+    {!! Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S') !!}
     {!! Form::control('textarea', 0, 'summary', $errors, trans('back/blog.summary')) !!}
     {!! Form::control('textarea', 0, 'content', $errors, trans('back/blog.content')) !!}
     {!! Form::control('text', 0, 'tags', $errors, trans('back/blog.tags'), isset($tags)? implode(',', $tags) : '') !!}

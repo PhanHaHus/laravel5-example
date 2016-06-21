@@ -6,7 +6,8 @@ use App\Models\Product,
     App\Models\Tag,
     App\Models\Comment;
 
-class ProductRepository extends BaseRepository {
+class ProductRepository extends BaseRepository
+{
 
     /**
      * The Tag instance.
@@ -25,27 +26,29 @@ class ProductRepository extends BaseRepository {
     /**
      * Create a new BlogRepository instance.
      *
-     * @param  App\Models\Post $product
+     * @param  App\Models\Product $product
      * @param  App\Models\Tag $tag
      * @param  App\Models\Comment $comment
      * @return void
      */
     public function __construct(
-    Product $product, Tag $tag, Comment $comment) {
+        Product $product, Tag $tag, Comment $comment)
+    {
         $this->model = $product;
         $this->tag = $tag;
         $this->comment = $comment;
     }
 
     /**
-     * Create or update a post.
+     * Create or update a Product.
      *
-     * @param  App\Models\Post $product
-     * @param  array  $inputs
-     * @param  bool   $user_id
-     * @return App\Models\Post
+     * @param  App\Models\Product $product
+     * @param  array $inputs
+     * @param  bool $user_id
+     * @return App\Models\Product
      */
-    private function saveProduct($product, $inputs, $user_id = null) {
+    private function saveProduct($product, $inputs, $user_id = null)
+    {
         $product->title = $inputs['title'];
         $product->summary = $inputs['summary'];
         $product->content = $inputs['content'];
@@ -61,77 +64,82 @@ class ProductRepository extends BaseRepository {
     }
 
     /**
-     * Create a query for Post.
+     * Create a query for Product.
      *
      * @return Illuminate\Database\Eloquent\Builder
      */
-    private function queryActiveWithUserOrderByDate() {
+    private function queryActiveWithUserOrderByDate()
+    {
         return $this->model
-                    ->select('id', 'created_at', 'updated_at', 'title', 'slug', 'user_id', 'summary')
-                    ->whereActive(true)
-                    ->with('user')
-                    ->latest();
+            ->select('id', 'created_at', 'updated_at', 'title', 'slug', 'user_id', 'summary')
+            ->whereActive(true)
+            ->with('user')
+            ->latest();
     }
 
     /**
-     * Get post collection.
+     * Get Product collection.
      *
-     * @param  int  $n
+     * @param  int $n
      * @return Illuminate\Support\Collection
      */
-    public function indexFront($n) {
+    public function indexFront($n)
+    {
         $query = $this->queryActiveWithUserOrderByDate();
 
         return $query->paginate($n);
     }
 
     /**
-     * Get post collection.
+     * Get Product collection.
      *
-     * @param  int  $n
-     * @param  int  $id
+     * @param  int $n
+     * @param  int $id
      * @return Illuminate\Support\Collection
      */
-    public function indexTag($n, $id) {
+    public function indexTag($n, $id)
+    {
         $query = $this->queryActiveWithUserOrderByDate();
 
-        return $query->whereHas('tags', function($q) use($id) {
-                            $q->where('tags.id', $id);
-                        })
-                        ->paginate($n);
+        return $query->whereHas('tags', function ($q) use ($id) {
+            $q->where('tags.id', $id);
+        })
+            ->paginate($n);
     }
 
     /**
      * Get search collection.
      *
-     * @param  int  $n
-     * @param  string  $search
+     * @param  int $n
+     * @param  string $search
      * @return Illuminate\Support\Collection
      */
-    public function search($n, $search) {
+    public function search($n, $search)
+    {
         $query = $this->queryActiveWithUserOrderByDate();
 
-        return $query->where(function($q) use ($search) {
-                    $q->where('summary', 'like', "%$search%")
-                            ->orWhere('content', 'like', "%$search%")
-                            ->orWhere('title', 'like', "%$search%");
-                })->paginate($n);
+        return $query->where(function ($q) use ($search) {
+            $q->where('summary', 'like', "%$search%")
+                ->orWhere('content', 'like', "%$search%")
+                ->orWhere('title', 'like', "%$search%");
+        })->paginate($n);
     }
 
     /**
-     * Get post collection.
+     * Get Product collection.
      *
-     * @param  int     $n
-     * @param  int     $user_id
-     * @param  string  $orderby
-     * @param  string  $direction
+     * @param  int $n
+     * @param  int $user_id
+     * @param  string $orderby
+     * @param  string $direction
      * @return Illuminate\Support\Collection
      */
-    public function index($n, $user_id = null, $orderby = 'created_at', $direction = 'desc') {
+    public function index($n, $user_id = null, $orderby = 'created_at', $direction = 'desc')
+    {
         $query = $this->model
-                ->select('products.id', 'products.created_at', 'title', 'products.seen', 'active', 'user_id', 'slug', 'username')
-                ->join('users', 'users.id', '=', 'products.user_id')
-                ->orderBy($orderby, $direction);
+            ->select('products.id', 'products.created_at', 'title', 'products.seen', 'active', 'user_id', 'slug', 'username')
+            ->join('users', 'users.id', '=', 'products.user_id')
+            ->orderBy($orderby, $direction);
 
         if ($user_id) {
             $query->where('user_id', $user_id);
@@ -141,21 +149,22 @@ class ProductRepository extends BaseRepository {
     }
 
     /**
-     * Get post collection.
+     * Get Product collection.
      *
-     * @param  string  $slug
+     * @param  string $slug
      * @return array
      */
-    public function show($slug) {
+    public function show($slug)
+    {
         $product = $this->model->with('user', 'tags')->whereSlug($slug)->firstOrFail();
 
         $comments = $this->comment
-                ->wherePost_id($product->id)
-                ->with('user')
-                ->whereHas('user', function($q) {
-                    $q->whereValid(true);
-                })
-                ->get();
+            ->whereProduct_id($product->id)
+            ->with('user')
+            ->whereHas('user', function ($q) {
+                $q->whereValid(true);
+            })
+            ->get();
 
         return compact('product', 'comments');
     }
@@ -164,7 +173,8 @@ class ProductRepository extends BaseRepository {
      * Get product collection
      * @return array
      */
-    public function edit($product) {
+    public function edit($product)
+    {
         $tags = [];
 
         foreach ($product->tags as $tag) {
@@ -175,23 +185,25 @@ class ProductRepository extends BaseRepository {
     }
 
     /**
-     * Get post collection.
+     * Get Product collection.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return array
      */
-    public function GetByIdWithTags($id) {
+    public function GetByIdWithTags($id)
+    {
         return $this->model->with('tags')->findOrFail($id);
     }
 
     /**
-     * Update a post.
+     * Update a Product.
      *
-     * @param  array  $inputs
-     * @param  App\Models\Post $product
+     * @param  array $inputs
+     * @param  App\Models\Product $product
      * @return void
      */
-    public function update($inputs, $product) {
+    public function update($inputs, $product)
+    {
         $product = $this->saveProduct($product, $inputs);
 
         // Tag gestion
@@ -215,13 +227,14 @@ class ProductRepository extends BaseRepository {
     }
 
     /**
-     * Update "seen" in post.
+     * Update "seen" in Product.
      *
-     * @param  array  $inputs
-     * @param  int    $id
+     * @param  array $inputs
+     * @param  int $id
      * @return void
      */
-    public function updateSeen($inputs, $id) {
+    public function updateSeen($inputs, $id)
+    {
         $product = $this->getById($id);
 
         $product->seen = $inputs['seen'] == 'true';
@@ -230,13 +243,14 @@ class ProductRepository extends BaseRepository {
     }
 
     /**
-     * Update "active" in post.
+     * Update "active" in Product.
      *
-     * @param  array  $inputs
-     * @param  int    $id
+     * @param  array $inputs
+     * @param  int $id
      * @return void
      */
-    public function updateActive($inputs, $id) {
+    public function updateActive($inputs, $id)
+    {
         $product = $this->getById($id);
 
         $product->active = $inputs['active'] == 'true';
@@ -245,13 +259,14 @@ class ProductRepository extends BaseRepository {
     }
 
     /**
-     * Create a post.
+     * Create a Product.
      *
-     * @param  array  $inputs
-     * @param  int    $user_id
+     * @param  array $inputs
+     * @param  int $user_id
      * @return void
      */
-    public function store($inputs, $user_id) {
+    public function store($inputs, $user_id)
+    {
         $product = $this->saveProduct(new $this->model, $inputs, $user_id);
 
         // Tags gestion
@@ -275,34 +290,37 @@ class ProductRepository extends BaseRepository {
     }
 
     /**
-     * Destroy a post.
+     * Destroy a Product.
      *
-     * @param  App\Models\Post $product
+     * @param  App\Models\Product $product
      * @return void
      */
-    public function destroy($product) {
+    public function destroy($product)
+    {
         $product->tags()->detach();
 
         $product->delete();
     }
 
     /**
-     * Get post slug.
+     * Get Product slug.
      *
-     * @param  int  $comment_id
+     * @param  int $comment_id
      * @return string
      */
-    public function getSlug($comment_id) {
-        return $this->comment->findOrFail($comment_id)->post->slug;
+    public function getSlug($comment_id)
+    {
+        return $this->comment->findOrFail($comment_id)->Product->slug;
     }
 
     /**
      * Get tag name by id.
      *
-     * @param  int  $tag_id
+     * @param  int $tag_id
      * @return string
      */
-    public function getTagById($tag_id) {
+    public function getTagById($tag_id)
+    {
         return $this->tag->findOrFail($tag_id)->tag;
     }
 
