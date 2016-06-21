@@ -102,6 +102,7 @@
             {name: 'colors'}
         ]
     };
+    config.extraPlugins = 'videodetector';
 
     CKEDITOR.replace('summary', config);
 
