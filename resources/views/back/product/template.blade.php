@@ -28,10 +28,15 @@
         {!! url('/') . '/product/' . Form::text('slug', null, ['id' => 'permalien']) !!}
         <small class="text-danger">{!! $errors->first('slug') !!}</small>
     </div>
+
+
     {!! Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S') !!}
     {!! Form::control('textarea', 0, 'summary', $errors, trans('back/blog.summary')) !!}
     {!! Form::control('textarea', 0, 'content', $errors, trans('back/blog.content')) !!}
     {!! Form::control('text', 0, 'tags', $errors, trans('back/blog.tags'), isset($tags)? implode(',', $tags) : '') !!}
+
+    <button type="button" onclick="BrowseServer('image');">Pick Image</button>
+    <input type="text" id="image"/>
 
     {!! Form::submit(trans('front/form.send')) !!}
     {!! Form::close() !!}
@@ -43,6 +48,37 @@
 
 {!! HTML::script('ckeditor/ckeditor.js') !!}
 
+{{--pick image to text box--}}
+<script type="text/javascript">
+    // File Picker modification for FCK Editor v2.0 - www.fckeditor.net
+    // by: Pete Forde <pete@unspace.ca> @ Unspace Interactive
+    var urlobj;
+    function BrowseServer(obj)
+    {
+        urlobj = obj;
+        OpenServerBrowser(
+                '{!! url($url) !!}',
+                screen.width * 0.7,
+                screen.height * 0.7 ) ;
+    }
+    function OpenServerBrowser( url, width, height )
+    {
+        var iLeft = (screen.width - width) / 2 ;
+        var iTop = (screen.height - height) / 2 ;
+        var sOptions = "toolbar=no,status=no,resizable=yes,dependent=yes" ;
+        sOptions += ",width=" + width ;
+        sOptions += ",height=" + height ;
+        sOptions += ",left=" + iLeft ;
+        sOptions += ",top=" + iTop ;
+        var oWindow = window.open( url, "BrowseWindow", sOptions ) ;
+    }
+    function SetUrl( url, width, height, alt )
+    {
+        document.getElementById(urlobj).value = url ;
+        oWindow = null;
+    }
+</script>
+{{-------------------}}
 <script>
 
     var config = {
