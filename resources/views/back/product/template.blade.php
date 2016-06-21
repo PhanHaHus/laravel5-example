@@ -9,7 +9,7 @@
 @section('main')
 
 <!-- Entête de page -->
-@include('back.partials.entete', ['title' => trans('back/blog.dashboard'), 'icone' => 'pencil', 'fil' => link_to('blog', trans('back/blog.posts')) . ' / ' . trans('back/blog.creation')])
+@include('back.partials.entete', ['title' => "Product Dashboard", 'icone' => 'pencil', 'fil' => link_to('product', trans('back/blog.posts')) . ' / ' . trans('back/blog.creation')])
 
 <div class="col-sm-12">
     @yield('form')
@@ -25,7 +25,7 @@
 
     <div class="form-group {!! $errors->has('slug') ? 'has-error' : '' !!}">
         {!! Form::label('slug', trans('back/blog.permalink'), ['class' => 'control-label']) !!}
-        {!! url('/') . '/blog/' . Form::text('slug', null, ['id' => 'permalien']) !!}
+        {!! url('/') . '/product/' . Form::text('slug', null, ['id' => 'permalien']) !!}
         <small class="text-danger">{!! $errors->first('slug') !!}</small>
     </div>
 
@@ -34,7 +34,6 @@
     {!! Form::control('text', 0, 'tags', $errors, trans('back/blog.tags'), isset($tags)? implode(',', $tags) : '') !!}
 
     {!! Form::submit(trans('front/form.send')) !!}
-
     {!! Form::close() !!}
 </div>
 

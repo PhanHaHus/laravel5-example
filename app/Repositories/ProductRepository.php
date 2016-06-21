@@ -25,7 +25,7 @@ class ProductRepository extends BaseRepository {
     /**
      * Create a new BlogRepository instance.
      *
-     * @param  App\Models\Post $post
+     * @param  App\Models\Post $product
      * @param  App\Models\Tag $tag
      * @param  App\Models\Comment $comment
      * @return void
@@ -40,19 +40,20 @@ class ProductRepository extends BaseRepository {
     /**
      * Create or update a post.
      *
-     * @param  App\Models\Post $post
+     * @param  App\Models\Post $product
      * @param  array  $inputs
      * @param  bool   $user_id
      * @return App\Models\Post
      */
-    private function savePost($product, $inputs, $user_id = null) {
+    private function saveProduct($product, $inputs, $user_id = null) {
         $product->title = $inputs['title'];
         $product->summary = $inputs['summary'];
         $product->content = $inputs['content'];
         $product->slug = $inputs['slug'];
+        $product->category_id = 5;
         $product->active = isset($inputs['active']);
         if ($user_id) {
-            $post->user_id = $user_id;
+            $product->user_id = $user_id;
         }
         $product->save();
 
@@ -149,7 +150,7 @@ class ProductRepository extends BaseRepository {
         $product = $this->model->with('user', 'tags')->whereSlug($slug)->firstOrFail();
 
         $comments = $this->comment
-                ->wherePost_id($post->id)
+                ->wherePost_id($product->id)
                 ->with('user')
                 ->whereHas('user', function($q) {
                     $q->whereValid(true);
@@ -160,9 +161,7 @@ class ProductRepository extends BaseRepository {
     }
 
     /**
-     * Get post collection.
-     *
-     * @param  App\Models\Post $post
+     * Get product collection
      * @return array
      */
     public function edit($product) {
@@ -189,11 +188,11 @@ class ProductRepository extends BaseRepository {
      * Update a post.
      *
      * @param  array  $inputs
-     * @param  App\Models\Post $post
+     * @param  App\Models\Post $product
      * @return void
      */
-    public function update($inputs, $post) {
-        $post = $this->savePost($post, $inputs);
+    public function update($inputs, $product) {
+        $product = $this->saveProduct($product, $inputs);
 
         // Tag gestion
         $tags_id = [];
@@ -212,7 +211,7 @@ class ProductRepository extends BaseRepository {
             }
         }
 
-        $post->tags()->sync($tags_id);
+        $product->tags()->sync($tags_id);
     }
 
     /**
@@ -223,11 +222,11 @@ class ProductRepository extends BaseRepository {
      * @return void
      */
     public function updateSeen($inputs, $id) {
-        $post = $this->getById($id);
+        $product = $this->getById($id);
 
-        $post->seen = $inputs['seen'] == 'true';
+        $product->seen = $inputs['seen'] == 'true';
 
-        $post->save();
+        $product->save();
     }
 
     /**
@@ -238,11 +237,11 @@ class ProductRepository extends BaseRepository {
      * @return void
      */
     public function updateActive($inputs, $id) {
-        $post = $this->getById($id);
+        $product = $this->getById($id);
 
-        $post->active = $inputs['active'] == 'true';
+        $product->active = $inputs['active'] == 'true';
 
-        $post->save();
+        $product->save();
     }
 
     /**
@@ -253,7 +252,7 @@ class ProductRepository extends BaseRepository {
      * @return void
      */
     public function store($inputs, $user_id) {
-        $post = $this->savePost(new $this->model, $inputs, $user_id);
+        $product = $this->saveProduct(new $this->model, $inputs, $user_id);
 
         // Tags gestion
         if (array_key_exists('tags', $inputs) && $inputs['tags'] != '') {
@@ -265,9 +264,9 @@ class ProductRepository extends BaseRepository {
                 if (is_null($tag_ref)) {
                     $tag_ref = new $this->tag();
                     $tag_ref->tag = $tag;
-                    $post->tags()->save($tag_ref);
+                    $product->tags()->save($tag_ref);
                 } else {
-                    $post->tags()->attach($tag_ref->id);
+                    $product->tags()->attach($tag_ref->id);
                 }
             }
         }
@@ -278,13 +277,13 @@ class ProductRepository extends BaseRepository {
     /**
      * Destroy a post.
      *
-     * @param  App\Models\Post $post
+     * @param  App\Models\Post $product
      * @return void
      */
-    public function destroy($post) {
-        $post->tags()->detach();
+    public function destroy($product) {
+        $product->tags()->detach();
 
-        $post->delete();
+        $product->delete();
     }
 
     /**

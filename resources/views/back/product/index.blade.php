@@ -2,7 +2,7 @@
 
 @section('main')
 
-@include('back.partials.entete', ['title' => trans('back/product.dashboard') . link_to_route('product.create', trans('back/product.add'), [], ['class' => 'btn btn-info pull-right']), 'icone' => 'pencil', 'fil' => trans('back/blog.posts')])
+@include('back.partials.entete', ['title' => "Title" . link_to_route('product.create', "Add", [], ['class' => 'btn btn-info pull-right']), 'icone' => 'pencil', 'fil' => trans('back/blog.posts')])
 
 @if(session()->has('ok'))
 @include('partials/error', ['type' => 'success', 'message' => session('ok')])
@@ -18,19 +18,19 @@
             <thead>
                 <tr>
                     <th>
-                        {{ trans('back/product.title') }} 
+                        "Title"
                         <a href="#" name="posts.title" class="order">
                             <span class="fa fa-fw fa-{{ $order->name == 'posts.title' ? $order->sens : 'unsorted'}}"></span>
                         </a>
                     </th>
                     <th>
-                        {{ trans('back/product.date') }}
+                        "Date"
                         <a href="#" name="posts.created_at" class="order">
                             <span class="fa fa-fw fa-{{ $order->name == 'posts.created_at' ? $order->sens : 'unsorted'}}"></span>
                         </a>
                     </th>
                     <th>
-                        {{ trans('back/product.published') }}
+                        "Published"
                         <a href="#" name="posts.active" class="order">
                             <span class="fa fa-fw fa-{{ $order->name == 'posts.active' ? $order->sens : 'unsorted'}}"></span>
                         </a>
@@ -41,8 +41,8 @@
                         <a href="#" name="username" class="order">
                             <span class="fa fa-fw fa-{{ $order->name == 'username' ? $order->sens : 'unsorted'}}"></span>
                         </a>
-                    </th>            
-                    <th>
+                    </th>
+                        <th>
                         {{ trans('back/product.seen') }}
                         <a href="#" name="posts.seen" class="order">
                             <span class="fa fa-fw fa-{{ $order->name == 'posts.seen' ? $order->sens : 'unsorted'}}"></span>

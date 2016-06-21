@@ -121,10 +121,10 @@ class ProductController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\PostRequest $request
+     * @param  App\Http\Requests\ProductRequest $request
      * @return Response
      */
-    public function store(PostRequest $request) {
+    public function store(ProductRequest $request) {
         $this->product_gestion->store($request->all(), $request->user()->id);
 
         return redirect('product')->with('ok', trans('back/blog.stored'));
@@ -169,7 +169,7 @@ class ProductController extends Controller {
      * @return Response
      */
     public function update(
-    PostRequest $request, $id) {
+        ProductRequest $request, $id) {
         $post = $this->product_gestion->getById($id);
 
         $this->authorize('change', $post);
