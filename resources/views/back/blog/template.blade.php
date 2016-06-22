@@ -67,6 +67,7 @@
             {name: 'colors'}
         ]
     };
+    config.extraPlugins = 'iframe';
 
     CKEDITOR.replace('summary', config);
 

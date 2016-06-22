@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductCategory;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
@@ -10,7 +11,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\UserRepository;
 
 class ProductController extends Controller {
-
+    protected $listProductCate;
     /**
      * The ProductRepository instance.
      *
@@ -43,6 +44,7 @@ class ProductController extends Controller {
         $this->user_gestion = $user_gestion;
         $this->product_gestion = $product_gestion;
         $this->nbrPages = 2;
+        $this->listProductCate = ProductCategory::lists('name','id')->toArray();
 
         $this->middleware('redac', ['except' => ['indexFront', 'show', 'search']]);
         $this->middleware('admin');
@@ -103,7 +105,6 @@ class ProductController extends Controller {
                     'name' => $request->name,
                     'sens' => 'sort-' . $request->sens
         ];
-
         return view('back.product.index', compact('products', 'links', 'order'));
     }
 
@@ -114,8 +115,8 @@ class ProductController extends Controller {
      */
     public function create() {
         $url = config('medias.url');
-
-        return view('back.product.create')->with(compact('url'));
+        $listProductCate = $this->listProductCate;
+        return view('back.product.create')->with(compact('url','listProductCate'));
     }
 
     /**
@@ -137,8 +138,7 @@ class ProductController extends Controller {
      * @param  string $slug
      * @return Response
      */
-    public function show(
-    Guard $auth, $slug) {
+    public function show(Guard $auth, $slug) {
         $user = $auth->user();
 
         return view('front.product.show', array_merge($this->product_gestion->show($slug), compact('user')));
@@ -153,8 +153,9 @@ class ProductController extends Controller {
      */
     public function edit(UserRepository $user_gestion, $id) {
         $product = $this->product_gestion->getByIdWithTags($id);
+        $listProductCate = $this->listProductCate;
         $url = config('medias.url');
-        return view('back.product.edit', array_merge($this->product_gestion->edit($product), compact('url')));
+        return view('back.product.edit', array_merge($this->product_gestion->edit($product), compact('url','listProductCate')));
     }
 
     /**
@@ -164,8 +165,7 @@ class ProductController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update(
-        ProductRequest $request, $id) {
+    public function update(ProductRequest $request, $id) {
         $product = $this->product_gestion->getById($id);
 
         $this->product_gestion->update($request->all(), $product);

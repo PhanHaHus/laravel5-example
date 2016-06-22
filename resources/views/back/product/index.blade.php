@@ -136,7 +136,7 @@
     $('.breadcrumb li').append('<span id="tempo" class="fa fa-refresh fa-spin"></span>');
     // Send ajax
         $.ajax({
-        url: '{{ url('blog / order') }}',
+        url: '{{ url('product / order') }}',
                 type: 'GET',
                 dataType: 'json',
                 data: "name=" + name + "&sens=" + tri

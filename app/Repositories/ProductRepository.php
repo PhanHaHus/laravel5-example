@@ -53,7 +53,7 @@ class ProductRepository extends BaseRepository
         $product->summary = $inputs['summary'];
         $product->content = $inputs['content'];
         $product->slug = $inputs['slug'];
-        $product->category_id = 5;
+        $product->category_id = $inputs['product_cate_id'];
         $product->active = isset($inputs['active']);
         if ($user_id) {
             $product->user_id = $user_id;

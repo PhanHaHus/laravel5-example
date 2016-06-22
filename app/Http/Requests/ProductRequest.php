@@ -17,7 +17,8 @@ class ProductRequest extends Request {
             'title' => 'required|max:255',
             'summary' => 'required|max:65000',
             'content' => 'required|max:65000',
-            'slug' => 'required|unique:posts,slug' . $id,
+            'product_cate_id' => 'required',
+            'slug' => 'required|unique:products,slug' . $id,
             'tags' => 'tags'
         ];
     }
