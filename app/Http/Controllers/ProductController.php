@@ -213,10 +213,7 @@ class ProductController extends Controller {
     public function destroy($id) {
         $product = $this->product_gestion->getById($id);
 
-        $this->authorize('change', $product);
-
         $this->product_gestion->destroy($product);
-
         return redirect('product')->with('ok', trans('back/blog.destroyed'));
     }
 

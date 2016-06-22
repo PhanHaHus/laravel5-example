@@ -9,7 +9,7 @@
 @section('main')
 
         <!-- Entête de page -->
-@include('back.partials.entete', ['title' => "Product Dashboard", 'icone' => 'pencil', 'fil' => link_to('product', trans('back/blog.posts')) . ' / ' . trans('back/blog.creation')])
+@include('back.partials.entete', ['title' => "Product Dashboard", 'icone' => 'pencil', 'fil' => link_to('product', 'Product') . ' / ' . trans('back/blog.creation')])
 <div class="col-sm-12">
     @yield('form')
 
