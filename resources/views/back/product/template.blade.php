@@ -33,22 +33,22 @@
     @if(isset($product))
         <?php $product_cate = $product->category_id; ?>
     @endif
-    {!! Form::select('product_cate_id', $listProductCate, $product_cate) !!}
+    {!! Form::select('product_cate_id', $listProductCate, $product_cate, array('class' => 'form-control')) !!}
     {!! Form::control('textarea', 0, 'summary', $errors, trans('back/blog.summary')) !!}
     {!! Form::control('textarea', 0, 'content', $errors, trans('back/blog.content')) !!}
     {!! Form::control('text', 0, 'tags', $errors, trans('back/blog.tags'), isset($tags)? implode(',', $tags) : '') !!}
 
-
     <div class="form-group">
-        <button type="button" onclick="BrowseServer('image');">Pick Image</button>
-        <input type="text" name="image" class="form-control" id="image"/>
+        <div class="col-xs-4">
+            <button type="button" onclick="BrowseServer('image');">Pick Image</button>
+            <input type="text" name="image" class="form-control" id="image"/>
+        </div>
+        <div class="col-xs-6">
+            <button type="button"  onclick="BrowseServer('manyImage');">Pick Many Image</button>
+            <input type="text" readonly name="manyImage" class="form-control" id="manyImage"/>
+            <button type="button" onclick="clearVal();">Clear Val</button>
+        </div>
     </div>
-    <div class="form-group">
-        <button type="button"  onclick="BrowseServer('manyImage');">Pick Many Image</button>
-        <input type="text" readonly name="manyImage" class="form-control" id="manyImage"/>
-        <button type="button" onclick="clearVal();">Clear Val</button>
-    </div>
-
     {!! Form::submit(trans('front/form.send')) !!}
     {!! Form::close() !!}
 </div>
@@ -89,9 +89,9 @@
             if(urlobj == 'image'){
                 document.getElementById(urlobj).value = url;
             }
+            //if choose many image
             if(urlobj == 'manyImage'){
                 var manyImage =  $('#manyImage').val();
-                console.log(manyImage);
                 manyImage+=( url+",");
                 document.getElementById(urlobj).value = manyImage;
             }
