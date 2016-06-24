@@ -49,6 +49,8 @@ class ProductRepository extends BaseRepository
      */
     private function saveProduct($product, $inputs, $user_id = null)
     {
+        $manyImage = $inputs['manyImage'];
+        $manyImage= array_filter(explode(",",$manyImage));
         $product->title = $inputs['title'];
         $product->summary = $inputs['summary'];
         $product->content = $inputs['content'];

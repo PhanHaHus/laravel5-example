@@ -38,8 +38,16 @@
     {!! Form::control('textarea', 0, 'content', $errors, trans('back/blog.content')) !!}
     {!! Form::control('text', 0, 'tags', $errors, trans('back/blog.tags'), isset($tags)? implode(',', $tags) : '') !!}
 
-    <button type="button" onclick="BrowseServer('image');">Pick Image</button>
-    <input type="text" id="image"/>
+
+    <div class="form-group">
+        <button type="button" onclick="BrowseServer('image');">Pick Image</button>
+        <input type="text" name="image" class="form-control" id="image"/>
+    </div>
+    <div class="form-group">
+        <button type="button"  onclick="BrowseServer('manyImage');">Pick Many Image</button>
+        <input type="text" readonly name="manyImage" class="form-control" id="manyImage"/>
+        <button type="button" onclick="clearVal();">Clear Val</button>
+    </div>
 
     {!! Form::submit(trans('front/form.send')) !!}
     {!! Form::close() !!}
@@ -74,8 +82,19 @@
             sOptions += ",top=" + iTop;
             var oWindow = window.open(url, "BrowseWindow", sOptions);
         }
+        function clearVal(){
+            $('#manyImage').val('');
+        }
         function SetUrl(url, width, height, alt) {
-            document.getElementById(urlobj).value = url;
+            if(urlobj == 'image'){
+                document.getElementById(urlobj).value = url;
+            }
+            if(urlobj == 'manyImage'){
+                var manyImage =  $('#manyImage').val();
+                console.log(manyImage);
+                manyImage+=( url+",");
+                document.getElementById(urlobj).value = manyImage;
+            }
             oWindow = null;
         }
     </script>
