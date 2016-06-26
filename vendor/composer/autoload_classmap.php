@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AlterProductTable' => $baseDir . '/database/migrations/2016_06_25_082535_alter_productcate_table.php',
     'AlterProductsTable' => $baseDir . '/database/migrations/2016_06_21_041741_alter_products_table.php',
     'App\\Console\\Commands\\Inspire' => $baseDir . '/app/Console/Commands/Inspire.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
@@ -631,7 +632,6 @@ return array(
     'Illuminate\\Auth\\DatabaseUserProvider' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/DatabaseUserProvider.php',
     'Illuminate\\Auth\\EloquentUserProvider' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/EloquentUserProvider.php',
     'Illuminate\\Auth\\Events\\Attempting' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/Events/Attempting.php',
-    'Illuminate\\Auth\\Events\\Failed' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/Events/Failed.php',
     'Illuminate\\Auth\\Events\\Lockout' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/Events/Lockout.php',
     'Illuminate\\Auth\\Events\\Login' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/Events/Login.php',
     'Illuminate\\Auth\\Events\\Logout' => $vendorDir . '/laravel/framework/src/Illuminate/Auth/Events/Logout.php',

@@ -16,31 +16,8 @@ class ProductCategory extends Model {
      */
     protected $table = 'product_category';
 
-    /**
-     * One to Many relation
-     *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user() {
-        return $this->belongsTo('App\Models\User');
-    }
-
-    /**
-     * Many to Many relation
-     *
-     * @return Illuminate\Database\Eloquent\Relations\belongToMany
-     */
-    public function tags() {
-        return $this->belongsToMany('App\Models\Tag');
-    }
-
-    /**
-     * One to Many relation
-     *
-     * @return Illuminate\Database\Eloquent\Relations\hasMany
-     */
-    public function comments() {
-        return $this->hasMany('App\Models\Comment');
+    public function product(){
+        return $this->hasMany('App\Models\Product');
     }
 
 }

@@ -33,5 +33,14 @@ class Product extends Model {
     public function comments() {
         return $this->hasMany('App\Models\Comment');
     }
+    public function cate(){
+        return $this->belongsTo('App\Models\Category');
+    }
 
+    public function danhgia(){
+        return $this->hasMany('App\Models\Danhgia');
+    }
+    public function chitiethoadon(){
+        return $this->hasMany('App\Models\chitiethoadon');
+    }
 }
