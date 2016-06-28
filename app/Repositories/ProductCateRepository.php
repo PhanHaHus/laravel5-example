@@ -45,7 +45,11 @@ class ProductCateRepository extends BaseRepository {
      * @return App\Models\Post
      */
     private function saveProductCate($productcate, $inputs, $user_id = null) {
+//        dd($inputs);
         $productcate->name = $inputs['name'];
+        $productcate->alias = str_slug($inputs['name'],"-");
+        $productcate->order = $inputs['stt'];
+        $productcate->parent_id = $inputs['parentId'];
         $productcate->save();
         return $productcate;
     }
