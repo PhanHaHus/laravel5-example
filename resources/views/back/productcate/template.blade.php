@@ -6,6 +6,8 @@
     @yield('form')
     <div class="form-group">
         <label for="exampleInputEmail1" class="col-md-2">Danh mục</label>
+        <?php cate_parent($parent, 0, "-->",$productcate->parent_id); ?>
+
         <div class="col-md-8">
             <select class="form-control" name="parentId">
                 <option value="0">Mời bạn chọn</option>
