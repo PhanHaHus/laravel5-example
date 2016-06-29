@@ -9,7 +9,8 @@ use App\Http\Requests\SearchRequest;
 use App\Repositories\BlogRepository;
 use App\Repositories\UserRepository;
 
-class BlogController extends Controller {
+class BlogController extends Controller
+{
 
     /**
      * The BlogRepository instance.
@@ -39,7 +40,8 @@ class BlogController extends Controller {
      * @param  App\Repositories\UserRepository $user_gestion
      * @return void
      */
-    public function __construct(BlogRepository $blog_gestion, UserRepository $user_gestion) {
+    public function __construct(BlogRepository $blog_gestion, UserRepository $user_gestion)
+    {
         $this->user_gestion = $user_gestion;
         $this->blog_gestion = $blog_gestion;
         $this->nbrPages = 2;
@@ -54,7 +56,8 @@ class BlogController extends Controller {
      *
      * @return Response
      */
-    public function indexFront() {
+    public function indexFront()
+    {
         $posts = $this->blog_gestion->indexFront($this->nbrPages);
         $links = $posts->render();
 
@@ -66,7 +69,8 @@ class BlogController extends Controller {
      *
      * @return Redirection
      */
-    public function index() {
+    public function index()
+    {
         return redirect(route('blog.order', [
             'name' => 'posts.created_at',
             'sens' => 'asc'
@@ -79,10 +83,11 @@ class BlogController extends Controller {
      * @param  Illuminate\Http\Request $request
      * @return Response
      */
-    public function indexOrder(Request $request) {
+    public function indexOrder(Request $request)
+    {
         $statut = $this->user_gestion->getStatut();
         $posts = $this->blog_gestion->index(
-                10, $statut == 'admin' ? null : $request->user()->id, $request->name, $request->sens
+            10, $statut == 'admin' ? null : $request->user()->id, $request->name, $request->sens
         );
 
         $links = $posts->appends([
@@ -92,16 +97,16 @@ class BlogController extends Controller {
 
         if ($request->ajax()) {
             return response()->json([
-                        'view' => view('back.blog.table', compact('statut', 'posts'))->render(),
-                        'links' => e($links->setPath('order')->render())
+                'view' => view('back.blog.table', compact('statut', 'posts'))->render(),
+                'links' => e($links->setPath('order')->render())
             ]);
         }
 
         $links->setPath('')->render();
 
-        $order = (object) [
-                    'name' => $request->name,
-                    'sens' => 'sort-' . $request->sens
+        $order = (object)[
+            'name' => $request->name,
+            'sens' => 'sort-' . $request->sens
         ];
 
         return view('back.blog.index', compact('posts', 'links', 'order'));
@@ -112,7 +117,8 @@ class BlogController extends Controller {
      *
      * @return Response
      */
-    public function create() {
+    public function create()
+    {
         $url = config('medias.url');
 
         return view('back.blog.create')->with(compact('url'));
@@ -124,7 +130,8 @@ class BlogController extends Controller {
      * @param  App\Http\Requests\PostRequest $request
      * @return Response
      */
-    public function store(PostRequest $request) {
+    public function store(PostRequest $request)
+    {
         $this->blog_gestion->store($request->all(), $request->user()->id);
 
         return redirect('blog')->with('ok', trans('back/blog.stored'));
@@ -133,12 +140,13 @@ class BlogController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  Illuminate\Contracts\Auth\Guard $auth	 
+     * @param  Illuminate\Contracts\Auth\Guard $auth
      * @param  string $slug
      * @return Response
      */
     public function show(
-    Guard $auth, $slug) {
+        Guard $auth, $slug)
+    {
         $user = $auth->user();
 
         return view('front.blog.show', array_merge($this->blog_gestion->show($slug), compact('user')));
@@ -148,11 +156,12 @@ class BlogController extends Controller {
      * Show the form for editing the specified resource.
      *
      * @param  App\Repositories\UserRepository $user_gestion
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit(
-    UserRepository $user_gestion, $id) {
+        UserRepository $user_gestion, $id)
+    {
         $post = $this->blog_gestion->getByIdWithTags($id);
 
         $this->authorize('change', $post);
@@ -166,11 +175,12 @@ class BlogController extends Controller {
      * Update the specified resource in storage.
      *
      * @param  App\Http\Requests\PostUpdateRequest $request
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update(
-    PostRequest $request, $id) {
+        PostRequest $request, $id)
+    {
         $post = $this->blog_gestion->getById($id);
 
         $this->authorize('change', $post);
@@ -184,11 +194,12 @@ class BlogController extends Controller {
      * Update "vu" for the specified resource in storage.
      *
      * @param  Illuminate\Http\Request $request
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function updateSeen(
-    Request $request, $id) {
+        Request $request, $id)
+    {
         $this->blog_gestion->updateSeen($request->all(), $id);
 
         return response()->json();
@@ -198,11 +209,12 @@ class BlogController extends Controller {
      * Update "active" for the specified resource in storage.
      *
      * @param  Illuminate\Http\Request $request
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function updateActive(
-    Request $request, $id) {
+        Request $request, $id)
+    {
         $post = $this->blog_gestion->getById($id);
 
         $this->authorize('change', $post);
@@ -215,10 +227,11 @@ class BlogController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $post = $this->blog_gestion->getById($id);
 
         $this->authorize('change', $post);
@@ -230,11 +243,12 @@ class BlogController extends Controller {
 
     /**
      * Get tagged posts
-     * 
+     *
      * @param  Illuminate\Http\Request $request
      * @return Response
      */
-    public function tag(Request $request) {
+    public function tag(Request $request)
+    {
         $tag = $request->input('tag');
         $posts = $this->blog_gestion->indexTag($this->nbrPages, $tag);
         $links = $posts->appends(compact('tag'))->render();
@@ -249,7 +263,8 @@ class BlogController extends Controller {
      * @param  App\Http\Requests\SearchRequest $request
      * @return Response
      */
-    public function search(SearchRequest $request) {
+    public function search(SearchRequest $request)
+    {
         $search = $request->input('search');
         $posts = $this->blog_gestion->search($this->nbrPages, $search);
         $links = $posts->appends(compact('search'))->render();

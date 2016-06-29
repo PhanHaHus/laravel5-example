@@ -18,7 +18,7 @@ class IsAdmin {
 		{
 			return $next($request);
 		}
-		return new RedirectResponse(url('/'));
+		return new RedirectResponse(url('/auth/login'));
 	}
 
 }
