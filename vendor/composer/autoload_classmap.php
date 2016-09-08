@@ -18,6 +18,7 @@ return array(
     'CreateProductTagTable' => $baseDir . '/database/migrations/2016_06_21_082858_create_product_tag_table.php',
     'CreateProductsTable' => $baseDir . '/database/migrations/2016_03_10_145030_create_products_table.php',
     'CreateRolesTable' => $baseDir . '/database/migrations/2014_10_21_105844_create_roles_table.php',
+    'CreateTable' => $baseDir . '/database/migrations/2016_08_10_093231_create__table.php',
     'CreateTagsTable' => $baseDir . '/database/migrations/2014_10_26_172631_create_tags_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
