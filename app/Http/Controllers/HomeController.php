@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ChangeLocale;
+use App\Models\ProductCategory;
+use App\Models\Product;
 
 class HomeController extends Controller {
 
@@ -12,6 +14,13 @@ class HomeController extends Controller {
      * @return Response
      */
     public function index() {
+        $product = ProductCategory::with('product')->get();
+        foreach($product as $pro){
+            if($pro->product){
+                var_dump($pro->product);
+            }
+        }
+        die;
         return view('front.index');
     }
 

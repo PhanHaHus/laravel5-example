@@ -34,13 +34,13 @@ class Product extends Model {
         return $this->hasMany('App\Models\Comment');
     }
     public function cate(){
-        return $this->belongsTo('App\Models\Category');
+        return $this->belongsTo('App\Models\ProductCategory');
     }
 
     public function danhgia(){
         return $this->hasMany('App\Models\Danhgia');
     }
     public function chitiethoadon(){
-        return $this->hasMany('App\Models\chitiethoadon');
+        return $this->hasMany('App\Models\Chitiethoadon');
     }
 }
