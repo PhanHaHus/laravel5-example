@@ -19,6 +19,7 @@
         <!-- Page Title -->
         <title>{{ trans('front/site.title') }}</title>
         <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/nprogress.css" />
         <link rel="stylesheet" type="text/css" href="css/style980.css" />
         <link rel="stylesheet" type="text/css" href="css/style800.css" />
         <link rel="stylesheet" type="text/css" href="css/style700.css" />
@@ -38,6 +39,7 @@
         <script type="text/javascript" src="js/jquery.fancybox-1.3.4.pack.js"></script>
         <script type="text/javascript" src="js/jquery.countdown.js"></script>
         <script type="text/javascript" src="js/jquery.checkbox.js"></script>
+        <script type="text/javascript" src="js/nprogress.js"></script>
         <script type="text/javascript" src="js/js.js"></script>
     </head>
     <body class="index">
@@ -97,7 +99,20 @@
         r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
         ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>
-
+    <script>
+        //loading like youtube
+        $(document).ready(function () {
+            NProgress.start();
+            NProgress.configure({easing: 'ease', speed: 500});
+            NProgress.configure({showSpinner: true});
+        });
+        jQuery(window).load(function () {
+            NProgress.done();
+        });
+        $(document).ready(function() {
+            $('.fb-comments').attr("data-href", document.URL);
+        });
+    </script>
     @yield('scripts')
     </body>
 </html>
