@@ -589,6 +589,7 @@ img.aligncenter {
 	left:0;
 	z-index: 1;
 	width: 220px;
+	height: 100%;
 }
 .recent_carousel .slide .title,
 .recent_cars ul li .title{

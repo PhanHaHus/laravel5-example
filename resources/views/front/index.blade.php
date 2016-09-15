@@ -1,5 +1,4 @@
 @extends('front.template')
-
 {{--for yeild--}}
 @section('content')
     <div id="content">
@@ -8,7 +7,7 @@
                 <div class="page_slider">
                     <div class="slider slider_2">
                         <div class="slide">
-                            <img src="http://lorempixel.com/400/200/" alt=""/>
+                            <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                             <div class="description">
                                 <h2 class="title">2012 Mercedes-Benz CLS 320</h2>
                                 <p class="desc">
@@ -18,7 +17,7 @@
                             </div>
                         </div>
                         <div class="slide">
-                            <img src="http://lorempixel.com/400/200/" alt=""/>
+                            <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                             <div class="description">
                                 <h2 class="title">2010 Mercedes-Benz Sport</h2>
                                 <p class="desc">
@@ -37,7 +36,7 @@
                         <ul>
                             <li>
                                 <a href="#">
-                                    <img src="http://lorempixel.com/400/200/" alt=""/>
+                                    <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -55,7 +54,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -64,7 +63,7 @@
                             </li>
                             <li class="last">
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="http://lorempixel.com/400/200/" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -73,7 +72,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -82,7 +81,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="http://lorempixel.com/400/200/" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -101,7 +100,7 @@
                         <ul>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -110,7 +109,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="http://lorempixel.com/400/200/" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -119,7 +118,7 @@
                             </li>
                             <li class="last">
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -128,7 +127,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="http://lorempixel.com/400/200/" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -137,7 +136,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -146,7 +145,7 @@
                             </li>
                             <li class="last">
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="http://lorempixel.com/400/200/" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -155,7 +154,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -164,7 +163,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="http://lorempixel.com/400/200/" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -173,7 +172,7 @@
                             </li>
                             <li class="last">
                                 <a href="#">
-                                    <img src="images/placeholders/220x164.gif" alt=""/>
+                                    <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                                     <div class="description">Registration 2010<br/>3.0 Diesel<br/>230 HP<br/>Body
                                         Coupe<br/>80 000 Miles
                                     </div>
@@ -189,7 +188,7 @@
                         <h2><strong>Auto</strong> news</h2>
                         <div class="news_box">
                             <a href="#" class="thumb">
-                                <img src="images/placeholders/180x135.gif" alt=""/>
+                                <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                             </a>
                             <h5><a href="#">UNOFFICIAL PORSCHE 918 SPYDER PRICING POPS UP</a></h5>
                             <div class="date">November 1, 2012</div>
@@ -199,7 +198,7 @@
                         </div>
                         <div class="news_box bottom">
                             <a href="#" class="thumb">
-                                <img src="images/placeholders/180x135.gif" alt=""/>
+                                <img src="images/giaydantuong/giay-dan-tuong-nhat-2213.jpg" alt=""/>
                             </a>
                             <h5><a href="#">UNOFFICIAL PORSCHE 918 SPYDER PRICING POPS UP</a></h5>
                             <div class="date">November 1, 2012</div>
@@ -234,7 +233,6 @@
             </div>
         </div>
     </div>
-
 @stop
 
 

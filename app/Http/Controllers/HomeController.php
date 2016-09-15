@@ -17,10 +17,10 @@ class HomeController extends Controller {
         $product = ProductCategory::with('product')->get();
         foreach($product as $pro){
             if($pro->product){
-                var_dump($pro->product);
+                //var_dump($pro->product);
             }
         }
-        die;
+//        die;
         return view('front.index');
     }
 
